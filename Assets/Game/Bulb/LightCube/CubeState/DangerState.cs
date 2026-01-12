@@ -10,7 +10,7 @@ namespace Game.Bulb.LightCube.CubeState
     {
         public void EnterState(LightCube cube)
         {
-            cube.IsDamageActive = true;
+            cube.IsDamageActive = true; //피해
             cube.Renderer.material.SetColor("_EmissionColor", Color.red * 3f); // 빛나는 빨간색
             cube.Renderer.material.DOColor(Color.red, 0.1f);
             cube.transform.DOPunchPosition(Vector3.up * 0.3f, 0.2f);
@@ -18,7 +18,7 @@ namespace Game.Bulb.LightCube.CubeState
         public void Execute(LightCube cube) { }
         public void ExitState(LightCube cube)
         {
-            cube.IsDamageActive = false;
+            cube.IsDamageActive = false; //피해 비활성화
         }
     }
 }

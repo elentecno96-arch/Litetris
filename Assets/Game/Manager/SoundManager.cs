@@ -77,7 +77,8 @@ namespace Game.Manager
 
         private void ApplyVolumeToMixer(string parameterName, float value)
         {
-            //인간의　귀는　소리의
+            //인간의　귀는　소리의 크기를 로그 스케일로 인식함
+            //데시벨(dB)단위로 변환해줘야 귀에 자연스럽게 소리가 조절되는 느낌이 줌
             float dB = Mathf.Log10(Mathf.Clamp(value, 0.0001f, 1f)) * 20f;
             mainMixer.SetFloat(parameterName, dB);
             Debug.Log($"[Sound] 파라미터: {parameterName} | 값: {value} | dB: {dB} |");

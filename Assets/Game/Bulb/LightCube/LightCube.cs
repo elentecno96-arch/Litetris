@@ -49,6 +49,8 @@ namespace Game.Bulb.LightCube
 
         private void ExecuteStateChange(ICubeState newState)
         {
+            //현재 진행중인 애니메이션을 즉시 Complete지점으로 보낸 뒤 파괴
+            //안그러면 색이 남음
             Renderer.material.DOKill(true);
             transform.DOKill(true);
 
@@ -59,6 +61,7 @@ namespace Game.Bulb.LightCube
 
         private int GetStatePriority(ICubeState state)
         {
+            //현재보다 낮은 단계 상태로는 절대 돌아갈 수 없게 함
             if (state is DangerState) return 2;
             if (state is WarningState) return 1;
             return 0; // IdleState
@@ -78,6 +81,9 @@ namespace Game.Bulb.LightCube
             ForceChangeState(idleState);
         }
 
+        //시퀀스(Sequence)
+        //여러개의 트윈을 하나의 그룹으로 묶어 시간 순서대로 제어가능하게 하는 도구
+        //애니메이션의 설계도가 있는 프레임 같은 느낌
         public async UniTask ActivateSequence(float warningTime, float dangerTime)
         {
             _activePatternCount++;

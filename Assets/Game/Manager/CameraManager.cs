@@ -43,6 +43,7 @@ namespace Game.Manager
 
         public async UniTask TransitionToMainView()
         {
+            //DOMove와 DORotate를 기다림
             await UniTask.WhenAll(
                 mainCamera.transform.DOMove(initialPosition, transitionDuration)
                     .SetEase(transitionEase).ToUniTask(),
@@ -50,15 +51,18 @@ namespace Game.Manager
                     .SetEase(transitionEase).ToUniTask()
             );
         }
+
         public void BeatPulse(float strength = 0.2f, float duration = 0.1f)
         {
+            //카메라의 화각을 순식간에 좁혔다가 Yoyo 되돌린다
             mainCamera.DOFieldOfView(mainCamera.fieldOfView - (strength * 10f), duration)
                 .SetLoops(2, LoopType.Yoyo)
                 .SetEase(Ease.OutQuad);
-
+            //DOBlendableMoveBy 기존 위치에서 a만큼 더함 (중첩)
             mainCamera.transform.DOBlendableMoveBy(mainCamera.transform.forward * strength, duration)
                 .SetLoops(2, LoopType.Yoyo);
         }
+        //배경색을 순간적으로 바꿨다가 되돌림
         public void FlashBackgroundColor(Color flashColor, float duration = 0.2f)
         {
             Color originalColor = mainCamera.backgroundColor;
@@ -67,6 +71,7 @@ namespace Game.Manager
         }
         public void ShakeCamera(float duration = 0.5f, float strength = 0.5f)
         {
+            //DOShakePosition 무작위로 흔듬
             mainCamera.transform.DOShakePosition(duration, strength);
         }
 
