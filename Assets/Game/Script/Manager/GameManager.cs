@@ -18,7 +18,7 @@ namespace Game.Script.Manager
 
         [Header("Settings")]
         public int maxHealth = 3;
-        private int currentHealth;
+        public int currentHealth;
         private float playTime;
         private GameState currentState;
         private PlayerController _playerController;
@@ -27,8 +27,10 @@ namespace Game.Script.Manager
         public PlayerController PlayerController => _playerController;
 
         //MVP 분리 작업을 위한 이벤트
-        //public event Action<int> OnHealthChanged;
+        public event Action<int> OnHealthChanged;
         public event Action OnPlayerDamaged;
+        public event Action<int, int> OnGameStarted;
+        public event Action OnReturnToTitle;
 
         private void Awake()
         {
@@ -81,16 +83,15 @@ namespace Game.Script.Manager
             //이전에 있던 정보 청소
             CleanupGameSystem();
 
+            currentHealth = maxHealth;
+            playTime = 0;
+            OnGameStarted?.Invoke(maxHealth, currentHealth);
+
             if (RhythmManager.Instance != null)
                 RhythmManager.Instance.OnPhaseChanged += (phase) => UIManager.Instance.ShowPhasePopup(phase);
 
-            UIManager.Instance.SetActiveHealthUI(true);
             //우리의 네모친구 소환!
             SpawnPlayer();
-
-            UIManager.Instance.ResetHealthUI(maxHealth);
-            UIManager.Instance.SetActiveHealthUI(true);
-
             //시작 카운트 이것도 다 지나갈 때 까지 기다려야함
             await UIManager.Instance.PlayCountdownSequence();
 
@@ -98,7 +99,6 @@ namespace Game.Script.Manager
             playTime = 0;
             currentState = GameState.Playing;
 
-            UIManager.Instance.UpdateHealth(currentHealth);
             //음악 재생 후 시작
             RhythmManager.Instance.StartRhythmDirector();
         }
@@ -125,10 +125,8 @@ namespace Game.Script.Manager
             if (currentState != GameState.Playing) return;
             currentHealth--;
 
-            //알람만 보냄
-            //OnHealthChanged?.Invoke(currentHealth);
+            OnHealthChanged?.Invoke(currentHealth);
             OnPlayerDamaged?.Invoke();
-            UIManager.Instance.UpdateHealth(currentHealth);
             if (currentHealth <= 0) GameOver();
         }
 
@@ -136,10 +134,6 @@ namespace Game.Script.Manager
         {
             currentState = GameState.GameOver;
             RhythmManager.Instance.StopDirector();
-
-            // 데이터 저장 로직은 여기에 유지
-            //float bestTime = PlayerPrefs.GetFloat("BestSurvivalTime", 0f);
-            //if (playTime > bestTime) PlayerPrefs.SetFloat("BestSurvivalTime", playTime);
 
             PatternManager.Instance.StopAllPatterns();
             UIManager.Instance.ShowResult(playTime);
@@ -161,7 +155,7 @@ namespace Game.Script.Manager
             currentHealth = maxHealth;
             currentState = GameState.Playing;
 
-            UIManager.Instance.UpdateHealth(currentHealth);
+            OnGameStarted?.Invoke(maxHealth, currentHealth);
             RhythmManager.Instance.StartRhythmDirector();
         }
 
@@ -177,7 +171,7 @@ namespace Game.Script.Manager
 
             if (_playerController != null) Destroy(_playerController.gameObject);
 
-            UIManager.Instance.HideHealthUI();
+            OnReturnToTitle?.Invoke();
 
             // 카메라가 메인 뷰로 돌아가는 동안 대기
             await CameraManager.Instance.TransitionToMainView();
