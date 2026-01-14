@@ -18,16 +18,8 @@ namespace Game.Script.Manager
         [SerializeField] private GameObject optionPanel;
         public GameObject TitlePanel => titlePanel;
 
-        [Header("Health UI")]
-        [SerializeField] private GameObject healthGroup;
-        [SerializeField] private Image[] heartImages;
-        [SerializeField] private Color normalHeartColor = Color.white;
-        [SerializeField] private Color loseHeartColor = Color.gray;
-        //[SerializeField] private Image damageFlashImage;
-
         [Header("Animations")]
         [SerializeField] private RectTransform[] mainButtons;
-        [SerializeField] private float buttonPunchAmount = 0.15f;
 
         [Header("Timer & Status UI")]
         [SerializeField] private TextMeshProUGUI survivalTimeText;
@@ -57,17 +49,11 @@ namespace Game.Script.Manager
             helpPanel.SetActive(false);
             optionPanel.SetActive(false);
             resultPanel.SetActive(false);
-
-            if (healthGroup != null) healthGroup.SetActive(false);
             HideCountdown();
         }
 
         private void Start()
         {
-            if (RhythmManager.Instance != null)
-            {
-                RhythmManager.Instance.OnBeat += HandleHeartBeat;
-            }
             bgmSlider.value = PlayerPrefs.GetFloat("BGMVolume", 0.75f);
             sfxSlider.value = PlayerPrefs.GetFloat("SFXVolume", 0.75f);
             bgmSlider.onValueChanged.AddListener(val => {
@@ -78,35 +64,6 @@ namespace Game.Script.Manager
                 SoundManager.Instance.SetSFXVolume(val);
             });
         }
-
-        private void OnDestroy()
-        {
-            // 이벤트 구독 해제 (중요!)
-            // 널래퍼런스 너무 싫다
-            if (RhythmManager.Instance != null)
-            {
-                RhythmManager.Instance.OnBeat -= HandleHeartBeat;
-            }
-            transform.DOKill();
-            foreach (var heart in heartImages)
-            {
-                if (heart != null) heart.transform.DOKill();
-            }
-        }
-
-        // 비트에 맞춰 하트가 뛰는 연출
-        private void HandleHeartBeat(int beat)
-        {
-            foreach (var heart in heartImages)
-            {
-                if (heart != null && heart.color != loseHeartColor)
-                {
-                    heart.transform.DOKill();
-                    heart.transform.DOPunchScale(Vector3.one * buttonPunchAmount, 0.1f);
-                }
-            }
-        }
-
         #region UI 애니메이션 (Panel 제어)
 
         public void PlayTitleButtonAnimation()
@@ -189,90 +146,6 @@ namespace Game.Script.Manager
 
         public void OnClickExit() => GameManager.Instance.QuitGame();
 
-        #endregion
-
-        #region 인게임 UI 업데이트
-
-        public void UpdateHealth(int currentHealth)
-        {
-            for (int i = 0; i < heartImages.Length; i++)
-            {
-                if (heartImages[i] == null) continue;
-                heartImages[i].transform.DOKill();
-
-                if (i < currentHealth)
-                {
-                    heartImages[i].DOColor(normalHeartColor, 0.3f);
-                    heartImages[i].transform.DOScale(1.0f, 0.3f);
-                }
-                else
-                {
-                    if (heartImages[i].color != loseHeartColor)
-                    {
-                        heartImages[i].DOColor(loseHeartColor, 0.3f);
-                        heartImages[i].transform.DOScale(0.7f, 0.3f);
-                        heartImages[i].transform.DOShakePosition(0.4f, 10f, 20);
-                    }
-                }
-            }
-        }
-        public void ResetHealthUI(int maxHealth)
-        {
-            if (heartImages == null) return;
-
-            healthGroup.SetActive(true);
-            healthGroup.transform.DOKill();
-            healthGroup.transform.localScale = Vector3.one;
-
-            for (int i = 0; i < heartImages.Length; i++)
-            {
-                if (heartImages[i] == null) continue;
-
-                heartImages[i].transform.DOKill();
-                heartImages[i].DOKill();
-
-                heartImages[i].transform.localScale = Vector3.one;
-                heartImages[i].transform.localPosition = Vector3.zero;
-
-                if (i < maxHealth)
-                {
-                    heartImages[i].color = normalHeartColor;
-                    heartImages[i].gameObject.SetActive(true);
-                }
-                else
-                {
-                    heartImages[i].gameObject.SetActive(false); 
-                }
-            }
-        }
-
-        public void SetActiveHealthUI(bool active)
-        {
-            if (healthGroup == null) return;
-            healthGroup.transform.DOKill();
-
-            if (active)
-            {
-                healthGroup.SetActive(true);
-                healthGroup.transform.localScale = Vector3.zero;
-                healthGroup.transform.DOScale(Vector3.one, 0.5f).SetEase(Ease.OutBack).SetUpdate(true);
-            }
-            else
-            {
-                healthGroup.transform.DOScale(Vector3.zero, 0.3f).SetEase(Ease.InBack).SetUpdate(true)
-                    .OnComplete(() => healthGroup.SetActive(false));
-            }
-        }
-
-        //DamageFlashView로 이동
-        //public void PlayDamageFlash()
-        //{
-        //    if (damageFlashImage == null) return;
-        //    damageFlashImage.DOKill();
-        //    damageFlashImage.color = new Color(1, 0, 0, 0.4f);
-        //    damageFlashImage.DOFade(0f, 0.5f).SetEase(Ease.InQuad);
-        //}
-
         public void UpdateSurvivalTime(float time)
         {
             TimeSpan t = TimeSpan.FromSeconds(time);
@@ -342,30 +215,11 @@ namespace Game.Script.Manager
         public void ShowTitleUI()
         {
             CloseAllPopups();
-            if (healthGroup != null)
-            {
-                healthGroup.SetActive(false);
-                healthGroup.transform.DOKill();
-            }
             titlePanel.SetActive(true);
             titlePanel.transform.DOKill();
             titlePanel.transform.localScale = Vector3.one * 0.8f;
             titlePanel.transform.DOScale(Vector3.one, 0.5f).SetEase(Ease.OutBack).SetUpdate(true);
             PlayTitleButtonAnimation();
-        }
-        public void HideHealthUI()
-        {
-            if (healthGroup == null) return;
-
-            // 모든 하트 트윈 중지
-            healthGroup.transform.DOKill();
-            foreach (var heart in heartImages)
-            {
-                if (heart != null) heart.transform.DOKill();
-            }
-
-            // 애니메이션 없이 즉시 끄기 (가장 확실함)
-            healthGroup.SetActive(false);
         }
         public void HideCountdown() => countdownText.gameObject.SetActive(false);
         #endregion

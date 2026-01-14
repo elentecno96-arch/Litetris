@@ -89,7 +89,6 @@ namespace Game.Script.Player
                 MoveToGrid(nextX, nextY).Forget();
             }
         }
-
         private async UniTaskVoid MoveToGrid(int nextX, int nextY)
         {
             isMoving = true;
