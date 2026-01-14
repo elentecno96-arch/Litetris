@@ -1,6 +1,7 @@
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using Game.Player;
+using System;
 using UnityEngine;
 
 namespace Game.Manager
@@ -24,6 +25,10 @@ namespace Game.Manager
 
         public GameState CurrentState => currentState;
         public PlayerController PlayerController => _playerController;
+
+        //MVP 분리 작업을 위한 이벤트
+        //public event Action<int> OnHealthChanged;
+        //public event Action OnPlayerDamaged;
 
         private void Awake()
         {
@@ -119,6 +124,10 @@ namespace Game.Manager
         {
             if (currentState != GameState.Playing) return;
             currentHealth--;
+
+            //알람만 보냄
+            //OnHealthChanged?.Invoke(currentHealth);
+            //OnPlayerDamaged?.Invoke();
             UIManager.Instance.UpdateHealth(currentHealth);
             if (currentHealth <= 0) GameOver();
         }
