@@ -597,6 +597,101 @@ MonoBehaviour:
   bounceStrength: 0.2
   shakeDuration: 0.1
   shakeStrength: 0.3
+--- !u!1 &1057840483
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1057840484}
+  - component: {fileID: 1057840485}
+  m_Layer: 5
+  m_Name: HeartView
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1057840484
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1057840483}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1258884635}
+  m_Father: {fileID: 2565960447528364245}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1057840485
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1057840483}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f60254b75659455489ab9d719339729a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthGroup: {fileID: 1258884634}
+  heartImages:
+  - {fileID: 200883259997269573}
+  - {fileID: 3649878130553683716}
+  - {fileID: 7554866104388654933}
+  normalHeartColor: {r: 1, g: 1, b: 1, a: 1}
+  loseHeartColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+  punchAmount: 0.15
+--- !u!1 &1258884634
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1258884635}
+  m_Layer: 5
+  m_Name: healthGroup
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1258884635
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1258884634}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 6532402926807007064}
+  - {fileID: 1472562481379725453}
+  - {fileID: 2943565660562771226}
+  m_Father: {fileID: 1057840484}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1877987623
 GameObject:
   m_ObjectHideFlags: 0
@@ -1365,13 +1460,13 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6318321286383564924}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6794983306930579113}
-  m_Father: {fileID: 2565960447528364245}
+  m_Father: {fileID: 1258884635}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -2280,9 +2375,7 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 6532402926807007064}
-  - {fileID: 1472562481379725453}
-  - {fileID: 2943565660562771226}
+  - {fileID: 1057840484}
   m_Father: {fileID: 4249924425206595813}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -2597,13 +2690,13 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 835567518357215591}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4880776403035969586}
-  m_Father: {fileID: 2565960447528364245}
+  m_Father: {fileID: 1258884635}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -4431,6 +4524,7 @@ GameObject:
   - component: {fileID: 8065229482727329327}
   - component: {fileID: 6839178527512415343}
   - component: {fileID: 3142515794365254424}
+  - component: {fileID: 8065229482727329328}
   m_Layer: 5
   m_Name: heart
   m_TagString: Untagged
@@ -5447,13 +5541,13 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4276316534247114766}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 394042497110353692}
-  m_Father: {fileID: 2565960447528364245}
+  m_Father: {fileID: 1258884635}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -6632,6 +6726,19 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!114 &8065229482727329328
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5332391734493839115}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a5ebbd8a869eba41b509e2fc14b767d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HeartView: {fileID: 1057840485}
 --- !u!1001 &8116759735604535425
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6723,19 +6830,11 @@ MonoBehaviour:
   titlePanel: {fileID: 99153040198273742}
   helpPanel: {fileID: 4134845691035816443}
   optionPanel: {fileID: 733949469154199787}
-  healthGroup: {fileID: 5332391734493839115}
-  heartImages:
-  - {fileID: 200883259997269573}
-  - {fileID: 3649878130553683716}
-  - {fileID: 7554866104388654933}
-  normalHeartColor: {r: 1, g: 1, b: 1, a: 1}
-  loseHeartColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   mainButtons:
   - {fileID: 8260887757826484619}
   - {fileID: 7779587938815610406}
   - {fileID: 6014886250539087135}
   - {fileID: 2369367065123994885}
-  buttonPunchAmount: 0.15
   survivalTimeText: {fileID: 2106480342073074986}
   phaseNoticeText: {fileID: 5237354890928161885}
   resultPanel: {fileID: 6030187949025957126}
