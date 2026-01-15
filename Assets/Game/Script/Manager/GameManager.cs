@@ -19,8 +19,8 @@ namespace Game.Script.Manager
         [Header("Settings")]
         public int maxHealth = 3;
         public int currentHealth;
-        private float playTime;
-        private GameState currentState;
+        public float playTime;
+        public GameState currentState;
         private PlayerController _playerController;
 
         public GameState CurrentState => currentState;
@@ -31,6 +31,7 @@ namespace Game.Script.Manager
         public event Action OnPlayerDamaged;
         public event Action<int, int> OnGameStarted;
         public event Action OnReturnToTitle;
+        public event Action<float> OnGameOver;
 
         private void Awake()
         {
@@ -51,7 +52,6 @@ namespace Game.Script.Manager
             
             
         }
-
         private async UniTaskVoid InitializeTitleSequence()
         {
             await UniTask.WaitUntil(() => BoardManager.Instance != null);
@@ -87,16 +87,9 @@ namespace Game.Script.Manager
             playTime = 0;
             OnGameStarted?.Invoke(maxHealth, currentHealth);
 
-            if (RhythmManager.Instance != null)
-                RhythmManager.Instance.OnPhaseChanged += (phase) => UIManager.Instance.ShowPhasePopup(phase);
-
             //우리의 네모친구 소환!
             SpawnPlayer();
-            //시작 카운트 이것도 다 지나갈 때 까지 기다려야함
-            await UIManager.Instance.PlayCountdownSequence();
-
-            currentHealth = maxHealth;
-            playTime = 0;
+            await UniTask.Delay(TimeSpan.FromSeconds(2.0f));
             currentState = GameState.Playing;
 
             //음악 재생 후 시작
@@ -108,7 +101,6 @@ namespace Game.Script.Manager
             if (currentState == GameState.Playing)
             {
                 playTime += Time.deltaTime;
-                UIManager.Instance.UpdateSurvivalTime(playTime);
             }
         }
 
@@ -134,9 +126,9 @@ namespace Game.Script.Manager
         {
             currentState = GameState.GameOver;
             RhythmManager.Instance.StopDirector();
-
             PatternManager.Instance.StopAllPatterns();
             UIManager.Instance.ShowResult(playTime);
+            OnGameOver?.Invoke(playTime);
         }
 
         public void OnClickRestart()
@@ -149,13 +141,12 @@ namespace Game.Script.Manager
             currentState = GameState.Intro;
             CleanupGameSystem();
             SpawnPlayer();
-            await UIManager.Instance.PlayCountdownSequence();
-
             playTime = 0;
             currentHealth = maxHealth;
-            currentState = GameState.Playing;
 
             OnGameStarted?.Invoke(maxHealth, currentHealth);
+            await UniTask.Delay(TimeSpan.FromSeconds(2.0f));
+            currentState = GameState.Playing;
             RhythmManager.Instance.StartRhythmDirector();
         }
 
