@@ -64,5 +64,5 @@ FadeManager : 화면의 암전(Fade In/Out) 효과 연출 관리자
 
 [Feature] 비활성화되어 있던 실시간 생존 시간(Survival Time) 표시 기능 활성화
 
-[Migration]인게임 텍스트 제어 로직의 TextPresenter 이관
+[Optimization]인게임 텍스트 제어 로직의 TextPresenter 이관
 
