@@ -42,19 +42,18 @@ FadeManager : 화면의 암전(Fade In/Out) 효과 연출 관리자
 =========================================================================
 
 
-26/01/12 게임 도중 화면이 점점 멀어지는 현상을 수정하였습니다
+26/01/12
+[Bug Fix] 게임 플레이 도중 카메라가 점점 멀어지는 현상 수정
 
-26/01/14 UI의 대미지 이펙트, 하트 UI를 MVP로 리펙토링 하였습니다
-  + DamagePresenter.cs
-  + DamageFlashView.cs
-  + HeartPresenter.cs
-  + HeartView.cs
-  - UIManager의 대미지, 하트 관련 코드가 삭제 되었습니다
+26/01/14
+[Refactoring] 대미지 이펙트 및 하트 UI 시스템 MVP 패턴 도입
+ + Presenters: DamagePresenter.cs, HeartPresenter.cs
+ + Views: DamageFlashView.cs, HeartView.cs
+[Optimization] UIManager 내 대미지/하트 관련 의존성 제거 및 코드 정리
 
-26/01/15 UI의 텍스트 UI 와 효과를 MVP로 리펙토링 하였습니다
-  + TextPresenter.cs
-  + CountdownView.cs
-  + PhaseTextView.cs
-  + survivalTimeView.cs
-  - UIManager의 텍스트 관련 코드가 삭제 되었습니다
-기존에 사용되지 않았던 게임중 생존시간 표시가 활성화 되었습니다
+26/01/15
+[Refactoring] 텍스트 연출 및 인게임 정보 UI MVP 패턴 도입
+ + Presenters: TextPresenter.cs
+ + Views: CountdownView.cs, PhaseTextView.cs, survivalTimeView.cs
+[Feature] 비활성화되어 있던 실시간 생존 시간(Survival Time) 표시 기능 활성화
+[Migration]인게임 텍스트 제어 로직의 TextPresenter 이관
