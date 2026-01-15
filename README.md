@@ -43,12 +43,14 @@ UIManager : 모든 팝업, 메뉴창, 인게임 텍스트 연출 관리자
 
 
 26/01/12 게임 도중 화면이 점점 멀어지는 현상을 수정하였습니다
+
 26/01/14 UI의 대미지 이펙트, 하트 UI를 MVP로 리펙토링 하였습니다
   + DamagePresenter.cs
   + DamageFlashView.cs
   + HeartPresenter.cs
   + HeartView.cs
   - UIManager의 대미지, 하트 관련 코드가 삭제 되었습니다
+
 26/01/15 UI의 텍스트 UI 와 효과를 MVP로 리펙토링 하였습니다
   + TextPresenter.cs
   + CountdownView.cs
