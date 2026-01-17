@@ -66,3 +66,11 @@ FadeManager : 화면의 암전(Fade In/Out) 효과 연출 관리자
 
 [Optimization]인게임 텍스트 제어 로직의 TextPresenter 이관
 
+26/01/17
+
+[Refactoring] UI Open/Close 애니메이션 로직 분리 및 UIPanelEffect 컴포넌트 도입
+
+ + Add Component : UIPanelEffect.cs
+
+[Optimization] UIManager의 UIopen/close 애니메이션을 분리하여 결합도 낮춤
+
