@@ -56,7 +56,7 @@ namespace Game.Script.Manager
         {
             await UniTask.WaitUntil(() => BoardManager.Instance != null);
             BoardManager.Instance.StartTitleAnimation();
-            UIManager.Instance.PlayTitleButtonAnimation();
+            //UIManager.Instance.PlayTitleButtonAnimation();
         }
 
         private void CleanupGameSystem()
