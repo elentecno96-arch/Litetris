@@ -82,3 +82,13 @@ FadeManager : 화면의 암전(Fade In/Out) 효과 연출 관리자
 
 [Optimization] UIManager의 Button 애니메이션과 SoundBar를 분리하여 결합도 낮춤
 
+[Optimization] 렌더링 파이프라인 전환 및 성능 최적화 (Built-in -> URP)
+
++ Graphics: Universal Render Pipeline(URP) 도입
++ Rendering: SRP Batcher 활성화 및 Batching 최적화
++ Post-Processing: URP Global Volume 기반 Bloom 효과 재구축
+
+[Technical Achievements]
+- CPU 렌더링 부하 대폭 감소: SetPass Calls 약 175 -> 25 (약 85% 개선)
+- 확장성 확보: 배경 연출(좌우 큐브 배치 등) 추가 시에도 성능 저하를 최소화
+  
