@@ -69,8 +69,13 @@ FadeManager : 화면의 암전(Fade In/Out) 효과 연출 관리자
 26/01/17 ===========================================
 
 [Refactoring] UI Open/Close 애니메이션 로직 분리 및 UIPanelEffect 컴포넌트 도입
+              UI Button 애니메이션 로직 분리 및 UIButtonEffect 컴포넌트 도입
+              사운드 바(음량 관련) MVP로 Option과 SoundOptionView로 분리
 
- + Add Component : UIPanelEffect.cs
+ + Add Component : UIPanelEffect.cs, UIButtonEffect.cs
+ + Presenters : OptionPresenter.cs
+ + Views : SoundOptionView.cs
 
 [Optimization] UIManager의 UIopen/close 애니메이션을 분리하여 결합도 낮춤
+               UIManager의 Button 애니메이션과 SoundBar를 분리하여 결합도 낮춤
 
