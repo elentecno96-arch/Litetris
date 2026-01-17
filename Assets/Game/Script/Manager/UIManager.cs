@@ -5,6 +5,7 @@ using System.Threading;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Game.Script.Component.UIPanel;
 
 namespace Game.Script.Manager
 {
@@ -13,23 +14,21 @@ namespace Game.Script.Manager
         public static UIManager Instance { get; private set; }
 
         [Header("Main Menu Panels")]
-        [SerializeField] private GameObject titlePanel;
-        [SerializeField] private GameObject helpPanel;
-        [SerializeField] private GameObject optionPanel;
-        public GameObject TitlePanel => titlePanel;
+        [SerializeField] private UIPanelEffect titlePanel;
+        [SerializeField] private UIPanelEffect helpPanel;
+        [SerializeField] private UIPanelEffect optionPanel;
+        [SerializeField] private UIPanelEffect resultPanel;
+
+        public UIPanelEffect TitlePanel => titlePanel;
 
         [Header("Animations")]
         [SerializeField] private RectTransform[] mainButtons;
 
         [Header("Result & Countdown")]
-        [SerializeField] private GameObject resultPanel;
         [SerializeField] private TextMeshProUGUI finalTimeText;
 
         [SerializeField] private Slider bgmSlider;
         [SerializeField] private Slider sfxSlider;
-
-        private CancellationTokenSource _uiCts;
-
         private void Awake()
         {
             if (Instance == null) Instance = this;
@@ -39,10 +38,11 @@ namespace Game.Script.Manager
         }
         private void InitializeUI()
         {
-            titlePanel.SetActive(true);
-            helpPanel.SetActive(false);
-            optionPanel.SetActive(false);
-            resultPanel.SetActive(false);
+            //기능 활용
+            titlePanel.gameObject.SetActive(true);
+            helpPanel.gameObject.SetActive(false);
+            optionPanel.gameObject.SetActive(false);
+            resultPanel.gameObject.SetActive(false);
         }
         private void Start()
         {
@@ -100,39 +100,43 @@ namespace Game.Script.Manager
                     .SetUpdate(true);
             }
         }
-        public void OpenPanel(GameObject panel)
-        {
-            if (panel == null) return;
-            panel.SetActive(true);
-            panel.transform.DOKill();
-            panel.transform.localScale = Vector3.zero;
-            panel.transform.DOScale(Vector3.one, 0.4f).SetEase(Ease.OutBack).SetUpdate(true);
-        }
+        //public void OpenPanel(GameObject panel)
+        //{
+        //    if (panel == null) return;
+        //    panel.SetActive(true);
+        //    panel.transform.DOKill();
+        //    panel.transform.localScale = Vector3.zero;
+        //    panel.transform.DOScale(Vector3.one, 0.4f).SetEase(Ease.OutBack).SetUpdate(true);
+        //}
 
-        public void ClosePanel(GameObject panel)
-        {
-            if (panel == null || !panel.activeSelf) return;
-            panel.transform.DOKill();
-            panel.transform.DOScale(Vector3.zero, 0.3f).SetEase(Ease.InBack).SetUpdate(true)
-                .OnComplete(() => panel.SetActive(false));
-        }
+        //public void ClosePanel(GameObject panel)
+        //{
+        //    if (panel == null || !panel.activeSelf) return;
+        //    panel.transform.DOKill();
+        //    panel.transform.DOScale(Vector3.zero, 0.3f).SetEase(Ease.InBack).SetUpdate(true)
+        //        .OnComplete(() => panel.SetActive(false));
+        //}
         public void CloseAllPopups()
         {
-            ClosePanel(helpPanel);
-            ClosePanel(optionPanel);
-            ClosePanel(resultPanel);
+            //ClosePanel(helpPanel);
+            //ClosePanel(optionPanel);
+            //ClosePanel(resultPanel);
+            helpPanel.Hide();
+            optionPanel.Hide();
+            resultPanel.Hide();
         }
         public void OnClickStart()
         {
-            ClosePanel(titlePanel);
+            titlePanel.Hide();
+            //ClosePanel(titlePanel);
             GameManager.Instance.OnClickStart();
         }
 
-        public void OnClickHelp() => OpenPanel(helpPanel);
-        public void CloseHelp() => ClosePanel(helpPanel);
-
-        public void OnClickOption() => OpenPanel(optionPanel);
-        public void CloseOption() => ClosePanel(optionPanel);
+        public void OnClickHelp() => helpPanel.Show();//OpenPanel(helpPanel);
+        public void CloseHelp() => helpPanel.Hide();//ClosePanel(helpPanel);
+        public void OnClickOption() => optionPanel.Show();//OpenPanel(optionPanel);
+        public void CloseOption() => optionPanel.Hide();//ClosePanel(optionPanel);
+        public void HideResultPanel() => resultPanel.Hide();//ClosePanel(resultPanel);
 
         public void OnClickRestart() => GameManager.Instance.OnClickRestart();
 
@@ -142,17 +146,19 @@ namespace Game.Script.Manager
         public void ShowResult(float survivalTime)
         {
             finalTimeText.text = $"SURVIVED\n{survivalTime:F1}s";
-            OpenPanel(resultPanel);
+            //OpenPanel(resultPanel);
+            resultPanel.Show();
         }
 
-        public void HideResultPanel() => ClosePanel(resultPanel);
+        
         public void ShowTitleUI()
         {
             CloseAllPopups();
-            titlePanel.SetActive(true);
-            titlePanel.transform.DOKill();
-            titlePanel.transform.localScale = Vector3.one * 0.8f;
-            titlePanel.transform.DOScale(Vector3.one, 0.5f).SetEase(Ease.OutBack).SetUpdate(true);
+            //titlePanel.SetActive(true);
+            titlePanel.Show();
+            //titlePanel.transform.DOKill();
+            //titlePanel.transform.localScale = Vector3.one * 0.8f;
+            //titlePanel.transform.DOScale(Vector3.one, 0.5f).SetEase(Ease.OutBack).SetUpdate(true);
             PlayTitleButtonAnimation();
         }
     }
