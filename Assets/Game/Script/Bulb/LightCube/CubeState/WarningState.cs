@@ -10,9 +10,17 @@ namespace Game.Bulb.LightCube.CubeState
     {
         public void EnterState(LightCube cube)
         {
-            DOTween.To(() => cube.BaseColor, x => cube.BaseColor = x, Color.yellow, 0.15f)
-                             .SetLoops(-1, LoopType.Yoyo)
-                             .SetTarget(cube);
+            //DOTween.To(() => cube.BaseColor, x => cube.BaseColor = x, Color.yellow, 0.15f)
+            //                 .SetLoops(-1, LoopType.Yoyo)
+            //                 .SetTarget(cube);
+
+            Color targetBlue = new Color(0f, 0.5f, 1f);
+            cube.EmissionColor = Color.black;
+
+            DOTween.To(() => cube.EmissionColor, x => cube.EmissionColor = x, targetBlue, 0.4f)
+                .SetEase(Ease.InOutQuad)
+                .SetLoops(-1, LoopType.Yoyo)
+                .SetTarget(cube);
 
             //// 노란색으로 빠르게 깜빡이며 위험 신호 알림
             //cube.Renderer.material.DOColor(Color.yellow, 0.15f)
