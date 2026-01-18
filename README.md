@@ -107,7 +107,7 @@ PatternManager.cs
 PatternStrategy.cs
  + 10여 종의 패턴 리펙토링
  + 전략 내 이중 루프 및 중복 로직 전면 제거
- + 기술적으로 어려운 수학 공식을 AI를 이용해 풀었음
+ + 기술적으로 어려운 수학 공식을 AI를 이용해 설계
 
 [Optimization] 패턴 실행 효율성
  + 패턴 실행 시 발생하는 불필요한 new Vector2및 리스트 중복 할당 제거
