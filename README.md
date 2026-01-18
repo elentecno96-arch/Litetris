@@ -116,7 +116,7 @@ PatternStrategy.cs
 
 [Optimization] 패턴 실행 효율성
  + 패턴 실행 시 발생하는 불필요한 new Vector2및 리스트 중복 할당 제거
- + 샐로운 패턴 추가 시 수학적 판정식만 정의하면 되는 구조 확립
+ + 새로운 패턴 추가 시 수학적 판정식만 정의하면 되는 구조 확립
 
 [Feature] MaterialPropertyBlock을 이용한 최적화
  + 각 큐브 상태의 단계 별 색상 및 강도를 독립적으로 제어
