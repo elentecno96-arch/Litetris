@@ -91,4 +91,23 @@ FadeManager : 화면의 암전(Fade In/Out) 효과 연출 관리자
 [Technical Achievements]
 - CPU 렌더링 부하 대폭 감소: SetPass Calls 약 175 -> 25 (약 85% 개선)
 - 확장성 확보: 배경 연출(좌우 큐브 배치 등) 추가 시에도 성능 저하를 최소화
-  
+
+26/01/18 ===========================================
+
+[Refactoring] 보드 및 패턴 시스템 최적화
+
+BoardManager.cs
+ + 가로, 세로, 전체 리스트를 미리 캐싱하여 전략 클래스와의 결합도 낮춤
+ + 범위 기반 람다 필터(GetCubeInFilter)도입
+
+PatternManager.cs
+ + 패턴 정렬 시 거리 제곱 연산 최적화
+
+PatternStrategy.cs
+ + 10여 종의 패턴 리펙토링
+ + 전략 내 이중 루프 및 중복 로직 전면 제거
+ + 기술적으로 어려운 수학 공식을 AI를 이용해 풀었음
+
+[Optimization] 패턴 실행 효율성
+ + 패턴 실행 시 발생하는 불필요한 new Vector2및 리스트 중복 할당 제거
+ + 샐로운 패턴 추가 시 수학적 판정식만 정의하면 되는 구조 확립
