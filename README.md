@@ -5,22 +5,23 @@ GameJam Project
 
 1. 게임 소개
 장르 : 회피, 생존
+
 플랫폼 : PC (Windows)
 
-2. 조작 방법
+3. 조작 방법
 캐릭터 이동 : WASD or 방향키(상하좌우)
 UI 선택 및 클릭 : 마우스
 
-3. 사용된 기술
+4. 사용된 기술
 Engine : Unity
 Language : C#
 Libraries : UniTask, DOTween, TextMeshPro, Post Processing(Bloom)
 
-4. 구현하고 싶은 주요 기능
+5. 구현하고 싶은 주요 기능
 AudioSettings.dspTime를 이용해 오디오 샘플링 속도를 기준으로 비트로 나눠 비트에 맞춰
 패턴이 나오게끔 구현, UniTask와 DOTween을 적극 사용하여 연출에 사용
 
-5. 음악
+6. 음악
 - 해당 게임에 사용된 음악은 AI 음악 생성 사이트인 suno에서 제작되었습니다
 - 해당 게임에는 총 7개의 음악이 들어가 있으며 선택해서 플레이하는게 아닌 랜덤으로 재생되어 이어서 듣기로 되어있습니다
 
@@ -111,3 +112,9 @@ PatternStrategy.cs
 [Optimization] 패턴 실행 효율성
  + 패턴 실행 시 발생하는 불필요한 new Vector2및 리스트 중복 할당 제거
  + 샐로운 패턴 추가 시 수학적 판정식만 정의하면 되는 구조 확립
+
+[Feature] MaterialPropertyBlock을 이용한 최적화
+ + 각 큐브 상태의 단계 별 색상 및 강도를 독립적으로 제어
+ + MaterialPropertyBlock(MPB)를 사용하여 수백 개의 다른 발광 수치를 가지고 있어도
+   GPU Instancing이 깨지지 않도록 설계
+ + MPB 도입으로 인해 DOColor => DOTween.To로 변경
