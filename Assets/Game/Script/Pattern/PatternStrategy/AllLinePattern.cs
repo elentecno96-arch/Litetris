@@ -17,18 +17,29 @@ namespace Game.Pattern.PatternStrategy
 
         public List<LightCube> GetTargetCubes(int centerX, int centerY, int range)
         {
-            List<LightCube> targets = new List<LightCube>();
-            int boardSize = 9;
-
-            for (int i = 0; i < boardSize; i++)
+            //이제 여기에서 연산 부분을 삭제하고 보드에서 리스트를 받아오도록 변경
+            if (isVertical)
             {
-                int x = isVertical ? centerX : i;
-                int y = isVertical ? i : centerY;
-
-                var cube = BoardManager.Instance.GetCube(x, y);
-                if (cube != null) targets.Add(cube);
+                //세로줄 요청
+                return BoardManager.Instance.GetColumn(centerX);
             }
-            return targets;
+            else
+            {
+                //가로줄 요청
+                return BoardManager.Instance.GetRow(centerY);
+            }
+            //List<LightCube> targets = new List<LightCube>();
+            //int boardSize = 9;
+
+            //for (int i = 0; i < boardSize; i++)
+            //{
+            //    int x = isVertical ? centerX : i;
+            //    int y = isVertical ? i : centerY;
+
+            //    var cube = BoardManager.Instance.GetCube(x, y);
+            //    if (cube != null) targets.Add(cube);
+            //}
+            //return targets;
         }
     }
 }

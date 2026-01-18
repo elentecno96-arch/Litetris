@@ -58,18 +58,18 @@ namespace Game.Script.Manager
             if (!strategies.TryGetValue(patternId, out IPatternStrategy strategy)) return;
 
             var targets = strategy.GetTargetCubes(x, y, range);
-            if (targets == null) return;
+            //전략 매니저가 보드매니저에게 필터 전달
+            if (targets == null || targets.Count == 0) return;
 
             // 성능 최적화: sqrMagnitude 사용
             var sortedTargets = targets
                 .Where(c => c != null)
-                //보통 거리를 구할 때는 루트를 씌우는 Vector2.Distance를 사용하지만 연산 무거움
-                //그래서 루트를 씌우기 전 값인 sqrMagnitude를 사용해 CPU부담 줄임
-                //OrderBy = LINQ
-                //OrderByDescending = 거리가 먼 것부터 정렬
-                //나열된 데이터를 특정 기준에 따라 오름차순으로 정렬
-                //Vector2.Distance = 내부적으로 (제곱근/루트)연산
-                .OrderBy(c => (new Vector2(x, y) - new Vector2(c.X, c.Y)).sqrMagnitude);
+                //Vector2 객체 생성 없이 정수 곱셈만으로 거리를 비교합니다
+                .OrderBy(c => {
+                    int dx = x - c.X;
+                    int dy = y - c.Y;
+                    return dx * dx + dy * dy; // DistanceSqr 연산
+                });
 
             var token = cts.Token;
             try
