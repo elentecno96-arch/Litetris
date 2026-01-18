@@ -118,3 +118,5 @@ PatternStrategy.cs
  + MaterialPropertyBlock(MPB)를 사용하여 수백 개의 다른 발광 수치를 가지고 있어도
    GPU Instancing이 깨지지 않도록 설계
  + MPB 도입으로 인해 DOColor => DOTween.To로 변경
+
+[Feature] 큐브 상태 중 Warning상태의 색상을 노란색 => 푸른색으로 변경
