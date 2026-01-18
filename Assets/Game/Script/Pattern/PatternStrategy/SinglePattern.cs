@@ -11,12 +11,16 @@ namespace Game.Pattern.PatternStrategy
     {
         public List<LightCube> GetTargetCubes(int centerX, int centerY, int range)
         {
-            List<LightCube> targets = new List<LightCube>();
-
+            //보드 매니저로부터 해당 좌표의 단일 큐브 획득
             var cube = BoardManager.Instance.GetCube(centerX, centerY);
-            if (cube != null) targets.Add(cube);
+            return cube != null ? new List<LightCube> { cube } : new List<LightCube>();
 
-            return targets;
+            //List<LightCube> targets = new List<LightCube>();
+
+            //var cube = BoardManager.Instance.GetCube(centerX, centerY);
+            //if (cube != null) targets.Add(cube);
+
+            //return targets;
         }
     }
 }

@@ -1,8 +1,10 @@
 using Cysharp.Threading.Tasks;
 using Game.Bulb.LightCube;
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
+using static UnityEngine.Rendering.DebugUI.Table;
 
 namespace Game.Script.Manager
 {
@@ -19,6 +21,13 @@ namespace Game.Script.Manager
         //1차원 배열이 메모리 연속성이 좋아 성능 이점이 있고,
         //전체 큐브를 순회할 때 코드가 깔끔해짐
         private LightCube[] cubes;
+
+        //각 행, 열, 전체 큐브 리스트를 미리 캐싱
+        private List<LightCube>[] rows;
+        private List<LightCube>[] cols;
+        private List<LightCube> allCubesList;
+
+
         private CancellationTokenSource _titleAnimationCTS;
 
         public int BoardSize => boardSize;
@@ -37,6 +46,17 @@ namespace Game.Script.Manager
             //전체 길이인 (boardSize - 1) * spacing의 절반을 뒤로 빼준다
             //그래야 좌우/상하 대칭이 가능
             cubes = new LightCube[boardSize * boardSize];
+
+            //캐싱
+            allCubesList = new List<LightCube>(cubes.Length);
+            rows = new List<LightCube>[boardSize];
+            cols = new List<LightCube>[boardSize];
+            for (int i = 0; i < boardSize; i++)
+            {
+                rows[i] = new List<LightCube>();
+                cols[i] = new List<LightCube>();
+            }
+
             float offset = (boardSize - 1) * spacing * 0.5f;
 
             for (int y = 0; y < boardSize; y++)
@@ -50,10 +70,16 @@ namespace Game.Script.Manager
                     {
                         cube.Init(x, y);
                         cubes[GetIndexFromCoord(x, y)] = cube;
+
+                        //생성할 때 미리 캐싱
+                        allCubesList.Add(cube);
+                        rows[y].Add(cube);
+                        cols[x].Add(cube);
                     }
                 }
             }
         }
+        
         public void ResetAllCubes()
         {
             if (cubes == null) return;
@@ -67,13 +93,13 @@ namespace Game.Script.Manager
             if (x < 0 || x >= boardSize || y < 0 || y >= boardSize) return -1;
             return y * boardSize + x;
         }
-
         //외부에서 큐브를 요청 할 때 배달 역활
         public LightCube GetCube(int x, int y)
         {
-            int index = GetIndexFromCoord(x, y);
-            return index == -1 ? null : cubes[index];
+            if (x < 0 || x >= boardSize || y < 0 || y >= boardSize) return null;
+            return cubes[y * boardSize + x];
         }
+        #region [인트로 애니메이션]
         public void StartTitleAnimation()
         {
             StopTitleAnimation();
@@ -106,5 +132,36 @@ namespace Game.Script.Manager
             //해당 기능을 끄고 싶을 때 토큰 취소!
             catch (OperationCanceledException) { }
         }
+        #endregion
+        #region [전달 방식 프로퍼티]
+        //가로/세로 전달
+        public List<LightCube> GetRow(int y) => (y >= 0 && y < boardSize) ? rows[y] : new List<LightCube>();
+        public List<LightCube> GetColumn(int x) => (x >= 0 && x < boardSize) ? cols[x] : new List<LightCube>();
+        //전체 전달
+        public List<LightCube> GetAllCubes() => allCubesList;
+        //범위 전달
+        public List<LightCube> GetCubesInFilter(int centerX, int centerY, int r, Func<int, int, bool> filter)
+        {
+            List<LightCube> results = new List<LightCube>();
+
+            int minX = Mathf.Max(0, centerX - r);
+            int maxX = Mathf.Min(boardSize - 1, centerX + r);
+            int minY = Mathf.Max(0, centerY - r);
+            int maxY = Mathf.Min(boardSize - 1, centerY + r);
+
+            for (int y = minY; y <= maxY; y++)
+            {
+                for (int x = minX; x <= maxX; x++)
+                {
+                    if (filter(x, y))
+                    {
+                        var cube = GetCube(x, y);
+                        if (cube != null) results.Add(cube);
+                    }
+                }
+            }
+            return results;
+        }
+        #endregion
     }
 }
