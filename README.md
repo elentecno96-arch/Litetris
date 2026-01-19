@@ -125,3 +125,11 @@ PatternStrategy.cs
  + MPB 도입으로 인해 DOColor => DOTween.To로 변경
 
 [Feature] 큐브 상태 중 Warning상태의 색상을 노란색 => 푸른색으로 변경
+
+26/01/19 ===========================================
+
+[Feature] Intro 전용 씬 구축 및 비동기 로딩(Async Load)
+ + IntroManager 추가
+
+
+
