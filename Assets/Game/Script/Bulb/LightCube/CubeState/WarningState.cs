@@ -17,7 +17,7 @@ namespace Game.Bulb.LightCube.CubeState
             Color targetBlue = new Color(0f, 0.5f, 1f);
             cube.EmissionColor = Color.black;
 
-            DOTween.To(() => cube.EmissionColor, x => cube.EmissionColor = x, targetBlue, 0.4f)
+            DOTween.To(() => cube.EmissionColor, x => cube.EmissionColor = x, targetBlue, 0.15f)
                 .SetEase(Ease.InOutQuad)
                 .SetLoops(-1, LoopType.Yoyo)
                 .SetTarget(cube);

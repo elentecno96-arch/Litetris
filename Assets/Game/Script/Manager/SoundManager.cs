@@ -1,14 +1,13 @@
 using Game.Sound;
+using Game.Utility;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
 
 namespace Game.Script.Manager
 {
-    public class SoundManager : MonoBehaviour
+    public class SoundManager : Singleton<SoundManager>
     {
-        public static SoundManager Instance { get; private set; }
-
         [Header("Audio Mixer")]
         [SerializeField] private AudioMixer mainMixer;
         [SerializeField] private AudioMixerGroup sfxGroup;
@@ -23,21 +22,12 @@ namespace Game.Script.Manager
         private const string BGM_VOL_PARAM = "BGMVolume";
         private const string SFX_VOL_PARAM = "SFXVolume";
 
-        private void Awake()
+        protected override void Awake()
         {
+            base.Awake();
             sfxDictionary = new Dictionary<string, AudioClip>();
-            if (Instance == null)
-            {
-                Instance = this;
-                DontDestroyOnLoad(gameObject);
-                Initialize();
-            }
-            else
-            {
-                Destroy(gameObject);
-            }
+            Initialize();
         }
-
         private void Initialize()
         {
             foreach (var data in soundEffects)

@@ -2,15 +2,15 @@ using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using Game.Script.Player;
 using System;
+using System.Threading.Tasks;
 using UnityEngine;
+using Game.Utility;
 
 namespace Game.Script.Manager
 {
-    public class GameManager : MonoBehaviour
+    public class GameManager : Singleton<GameManager>
     {
-        //씬이 하나이기 때문에 씬에 대한 상태를 저장하기 위해서 만들어야했음
         public enum GameState { Title, Intro, Playing, GameOver }
-        public static GameManager Instance { get; private set; }
 
         [Header("References")]
         [SerializeField] private PlayerController playerPrefab;
@@ -33,10 +33,9 @@ namespace Game.Script.Manager
         public event Action OnReturnToTitle;
         public event Action<float> OnGameOver;
 
-        private void Awake()
+        protected override void Awake()
         {
-            if (Instance == null) Instance = this;
-            else { Destroy(gameObject); return; }
+            base.Awake();
             //중간에 할당치를 초과했다는 오류 때문에 급하게 찾아서 채운 코드
             //트윈의 기본 할당이 500이하였던거 같음
             DOTween.SetTweensCapacity(1000, 100);
@@ -50,7 +49,10 @@ namespace Game.Script.Manager
             //그래서 Forget을 이용해 강제적으로 실행시킴 무서운 친구임
             InitializeTitleSequence().Forget();
             
-            
+        }
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
         }
         private async UniTaskVoid InitializeTitleSequence()
         {
