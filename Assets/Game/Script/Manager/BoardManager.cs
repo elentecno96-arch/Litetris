@@ -1,5 +1,6 @@
 using Cysharp.Threading.Tasks;
 using Game.Bulb.LightCube;
+using Game.Utility;
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -8,10 +9,8 @@ using static UnityEngine.Rendering.DebugUI.Table;
 
 namespace Game.Script.Manager
 {
-    public class BoardManager : MonoBehaviour
+    public class BoardManager : Singleton<BoardManager>
     {
-        public static BoardManager Instance { get; private set; }
-
         [Header("Settings")]
         [SerializeField] private GameObject cubePrefab;
         [SerializeField] private int boardSize = 13;
@@ -32,14 +31,11 @@ namespace Game.Script.Manager
 
         public int BoardSize => boardSize;
 
-        private void Awake()
+        protected override void Awake()
         {
-            if (Instance == null) Instance = this;
-            else { Destroy(gameObject); return; }
-
+            base.Awake();
             GenerateBoard();
         }
-
         private void GenerateBoard()
         {
             //X * Spacing은 0,0으로 시작해 한쪽 방향으로만 치우셔 생성되기 때문에

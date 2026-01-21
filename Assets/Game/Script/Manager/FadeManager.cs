@@ -2,23 +2,16 @@ using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 using Cysharp.Threading.Tasks;
+using Game.Utility;
 
 namespace Game.Script.Manager
 {
-    public class FadeManager : MonoBehaviour
+    public class FadeManager : Singleton<FadeManager>
     {
-        public static FadeManager Instance { get; private set; }
-
         [SerializeField] private Image fadeImage;
-
-        private void Awake()
+        protected override void Awake()
         {
-            if (Instance == null)
-            {
-                Instance = this;
-                DontDestroyOnLoad(gameObject);
-            }
-            else Destroy(gameObject);
+            base.Awake();
         }
         public async UniTask FadeIn(float duration)
         {

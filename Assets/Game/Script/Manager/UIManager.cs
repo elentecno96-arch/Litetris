@@ -6,13 +6,12 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using Game.Script.Component.UI.UIPanel;
+using Game.Utility;
 
 namespace Game.Script.Manager
 {
-    public class UIManager : MonoBehaviour
+    public class UIManager : Singleton<UIManager>
     {
-        public static UIManager Instance { get; private set; }
-
         [Header("Main Menu Panels")]
         [SerializeField] private UIPanelEffect titlePanel;
         [SerializeField] private UIPanelEffect helpPanel;
@@ -21,11 +20,9 @@ namespace Game.Script.Manager
         public UIPanelEffect TitlePanel => titlePanel;
         [Header("Result & Countdown")]
         [SerializeField] private TextMeshProUGUI finalTimeText;
-        private void Awake()
+        protected override void Awake()
         {
-            if (Instance == null) Instance = this;
-            else { Destroy(gameObject); return; }
-
+            base.Awake();
             InitializeUI();
         }
         private void InitializeUI()
@@ -43,8 +40,9 @@ namespace Game.Script.Manager
                 GameManager.Instance.OnGameOver += ShowResult;
             }
         }
-        private void OnDestroy()
+        protected override void OnDestroy()
         {
+            base.OnDestroy();
             // 구독 해제
             if (GameManager.Instance != null)
                 GameManager.Instance.OnGameOver -= ShowResult;

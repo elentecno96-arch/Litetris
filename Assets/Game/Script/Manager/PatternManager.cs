@@ -3,6 +3,7 @@ using Game.Bulb.LightCube;
 using Game.Pattern.Interface;
 using Game.Pattern.PatternStrategy;
 using Game.Pattern.Strategy;
+using Game.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,20 +12,18 @@ using UnityEngine;
 
 namespace Game.Script.Manager
 {
-    public class PatternManager : MonoBehaviour
+    public class PatternManager : Singleton<PatternManager>
     {
-        public static PatternManager Instance { get; private set; }
         //패턴들을 담아두는 곳, 찾기 쉽게 딕셔너리로 관리
         private Dictionary<int, IPatternStrategy> strategies;
         private CancellationTokenSource cts;
 
-        private void Awake()
+        protected override void Awake()
         {
-            Instance = this;
+            base.Awake();
             cts = new CancellationTokenSource();
             InitializeStrategies();
         }
-
         private void InitializeStrategies()
         {
             strategies = new Dictionary<int, IPatternStrategy>

@@ -6,13 +6,12 @@ using System.Threading;
 using UnityEngine;
 using Game.Sound;
 using System.Linq;
+using Game.Utility;
 
 namespace Game.Script.Manager
 {
-    public class RhythmManager : MonoBehaviour
+    public class RhythmManager : Singleton<RhythmManager>
     {
-        public static RhythmManager Instance { get; private set; }
-
         public event Action<int> OnBeat;
         public event Action<int> OnPhaseChanged;
 
@@ -44,11 +43,9 @@ namespace Game.Script.Manager
         private bool isDirectorActive = false;
         private CancellationTokenSource _directorCTS;
 
-        private void Awake()
+        protected override void Awake()
         {
-            if (Instance == null) Instance = this;
-            else { Destroy(gameObject); return; }
-
+            base.Awake();
             availablePatternIDs = new List<int>();
         }
 
@@ -259,8 +256,9 @@ namespace Game.Script.Manager
             currentSongIndex = (currentSongIndex + 1) % playlist.Count;
             PlayCurrentSong();
         }
-        private void OnDestroy()
+        protected override void OnDestroy()
         {
+            base.OnDestroy();
             _directorCTS?.Cancel();
             _directorCTS?.Dispose();
         }

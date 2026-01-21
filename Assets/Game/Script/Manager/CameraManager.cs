@@ -1,14 +1,13 @@
 using System;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
+using Game.Utility;
 using UnityEngine;
 
 namespace Game.Script.Manager
 {
-    public class CameraManager : MonoBehaviour
+    public class CameraManager : Singleton<CameraManager>
     {
-        public static CameraManager Instance { get; private set; }
-
         [Header("Camera Settings")]
         [SerializeField] private UnityEngine.Camera mainCamera;
         [SerializeField] private float transitionDuration = 2.0f;
@@ -17,10 +16,9 @@ namespace Game.Script.Manager
         private Vector3 initialPosition;
         private Quaternion initialRotation;
 
-        private void Awake()
+        protected override void Awake()
         {
-            if (Instance == null) Instance = this;
-            else { Destroy(gameObject); return; }
+            base.Awake();
 
             if (mainCamera == null) mainCamera = UnityEngine.Camera.main;
 
