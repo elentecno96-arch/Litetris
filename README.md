@@ -131,5 +131,15 @@ PatternStrategy.cs
 [Feature] Intro 전용 씬 구축 및 비동기 로딩(Async Load)
  + IntroManager 추가
 
+26/01/28 ===========================================
 
+[Feature] 프로젝트 세팅을 안드로이드로 변경
+
+[Feature] UI의 크기 및 위치 변경
+
+[Feature] 터치 용 이동 버튼 4개 추가 및 Event Trigger와 연결
+
+[Feature] 빌드 시 고정 프레임 30을 직접 제어 가능하게 세팅 및 60프레임으로 초기화
+
+빌드 후 정상 작동
 
