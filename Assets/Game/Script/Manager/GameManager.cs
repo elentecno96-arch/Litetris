@@ -36,6 +36,7 @@ namespace Game.Script.Manager
         protected override void Awake()
         {
             base.Awake();
+            Application.targetFrameRate = 60;
             //중간에 할당치를 초과했다는 오류 때문에 급하게 찾아서 채운 코드
             //트윈의 기본 할당이 500이하였던거 같음
             DOTween.SetTweensCapacity(1000, 100);
@@ -92,6 +93,7 @@ namespace Game.Script.Manager
             //우리의 네모친구 소환!
             SpawnPlayer();
             await UniTask.Delay(TimeSpan.FromSeconds(2.0f));
+            UIManager.Instance.ShowMoblieControll();
             currentState = GameState.Playing;
 
             //음악 재생 후 시작
@@ -129,6 +131,7 @@ namespace Game.Script.Manager
             currentState = GameState.GameOver;
             RhythmManager.Instance.StopDirector();
             PatternManager.Instance.StopAllPatterns();
+            UIManager.Instance.HideMoblieControll();
             UIManager.Instance.ShowResult(playTime);
             OnGameOver?.Invoke(playTime);
         }
@@ -147,6 +150,7 @@ namespace Game.Script.Manager
             currentHealth = maxHealth;
 
             OnGameStarted?.Invoke(maxHealth, currentHealth);
+            UIManager.Instance.ShowMoblieControll();
             await UniTask.Delay(TimeSpan.FromSeconds(2.0f));
             currentState = GameState.Playing;
             RhythmManager.Instance.StartRhythmDirector();
@@ -161,6 +165,8 @@ namespace Game.Script.Manager
         {
             CleanupGameSystem();
             currentState = GameState.Title;
+
+            UIManager.Instance.HideMoblieControll();
 
             if (_playerController != null) Destroy(_playerController.gameObject);
 
