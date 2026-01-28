@@ -17,6 +17,7 @@ namespace Game.Script.Manager
         [SerializeField] private UIPanelEffect helpPanel;
         [SerializeField] private UIPanelEffect optionPanel;
         [SerializeField] private UIPanelEffect resultPanel;
+        [SerializeField] private UIPanelEffect mobileControlPanel;
         public UIPanelEffect TitlePanel => titlePanel;
         [Header("Result & Countdown")]
         [SerializeField] private TextMeshProUGUI finalTimeText;
@@ -32,6 +33,7 @@ namespace Game.Script.Manager
             helpPanel.gameObject.SetActive(false);
             optionPanel.gameObject.SetActive(false);
             resultPanel.gameObject.SetActive(false);
+            mobileControlPanel.gameObject.SetActive(false);
         }
         private void Start()
         {
@@ -68,11 +70,21 @@ namespace Game.Script.Manager
             CloseAllPopups();
             titlePanel.Show();
         }
+        public void OnTouchMove(string direction)
+        {
+            if (GameManager.Instance.CurrentState != GameManager.GameState.Playing) return;
+            if (GameManager.Instance.PlayerController != null)
+            {
+                GameManager.Instance.PlayerController.MoveByButton(direction);
+            }
+        }
         public void OnClickHelp() => helpPanel.Show();
         public void CloseHelp() => helpPanel.Hide();
         public void OnClickOption() => optionPanel.Show();
         public void CloseOption() => optionPanel.Hide();
         public void HideResultPanel() => resultPanel.Hide();
+        public void ShowMoblieControll() => mobileControlPanel.Show();
+        public void HideMoblieControll() => mobileControlPanel.Hide();
 
         public void OnClickRestart() => GameManager.Instance.OnClickRestart();
 

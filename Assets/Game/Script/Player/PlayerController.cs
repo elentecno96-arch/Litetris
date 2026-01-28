@@ -158,7 +158,27 @@ namespace Game.Script.Player
             if (meshRenderer != null) meshRenderer.material.color = originalColor;
             isInvincible = false;
         }
+        public void MoveByButton(string direction)
+        {
+            if (isMoving || GameManager.Instance.CurrentState != GameManager.GameState.Playing) return;
 
+            int horizontal = 0;
+            int vertical = 0;
+
+            //문자열에 따라 방향 결정
+            switch (direction.ToUpper())
+            {
+                case "UP": vertical = 1; break;
+                case "DOWN": vertical = -1; break;
+                case "LEFT": horizontal = -1; break;
+                case "RIGHT": horizontal = 1; break;
+            }
+
+            if (horizontal != 0 || vertical != 0)
+            {
+                TryMove(horizontal, vertical);
+            }
+        }
         private void OnDestroy()
         {
             // 혹시 남아있을지 모르는 모든 트윈 정리
